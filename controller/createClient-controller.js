@@ -2,12 +2,18 @@ import { clientService } from "../service/cliente-service.js";
 
 const formulario = document.querySelector("[data-form]");
 
-formulario.addEventListener("submit", (obj) => {
+formulario.addEventListener("submit", async (obj) => {
 	obj.preventDefault();
-	const nome = obj.target.querySelector("[data-nome]").value;
-	const email = obj.target.querySelector("[data-email]").value;
+	try {
+		const nome = obj.target.querySelector("[data-nome]").value;
+		const email = obj.target.querySelector("[data-email]").value;
 
-	clientService.newClient(nome, email).then(() => {
-		window.location.href = "../telas/cadastro_concluido.html";
-	});
+		await clientService.newClient(nome, email);
+		const cadastro_concluido = () => {
+			window.location.href = "../telas/cadastro_concluido.html";
+		};
+	} catch (err) {
+		console.error(err);
+		window.location.href = "../telas/erro.html";
+	}
 });

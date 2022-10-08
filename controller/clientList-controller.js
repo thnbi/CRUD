@@ -22,21 +22,31 @@ table.addEventListener("click", async (event) => {
 	let deletButton =
 		event.target.className === "botao-simples botao-simples--excluir";
 	if (deletButton) {
-		const clientLine = event.target.closest("[data-id]");
-		let id = clientLine.dataset.id;
-		await clientService.deletClient(id);
-		clientLine.remove();
+		try {
+			const clientLine = event.target.closest("[data-id]");
+			let id = clientLine.dataset.id;
+			await clientService.deletClient(id);
+			clientLine.remove();
+		} catch (err) {
+			console.error(err);
+			window.location.href = "../telas/erro.html";
+		}
 	}
 });
 
 const render = async () => {
-	const clientList = await clientService.clientList();
+	try {
+		const clientList = await clientService.clientList();
 
-	clientList.forEach((element) => {
-		table.appendChild(
-			createNewLine(element.nome, element.email, element.id)
-		);
-	});
+		clientList.forEach((element) => {
+			table.appendChild(
+				createNewLine(element.nome, element.email, element.id)
+			);
+		});
+	} catch (err) {
+		console.error(err);
+		window.location.href = "../telas/erro.html";
+	}
 };
 
 render();
