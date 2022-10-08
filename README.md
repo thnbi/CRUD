@@ -5,5 +5,5 @@ json-server --watch db.json
 
 depois rodar: 
 ```shell
-browser-sync start --server --file . --host --port 5000 --startPath admin/telas/lista_cliente.html
+browser-sync start --server --file . --host --port 5000 --startPath ./telas/lista_cliente.html
 ```
