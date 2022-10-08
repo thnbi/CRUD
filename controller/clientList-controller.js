@@ -14,27 +14,29 @@ const createNewLine = (nome, email, id) => {
 	newClientLine.innerHTML = content;
 
 	newClientLine.dataset.id = id;
-	console.log(newClientLine);
 	return newClientLine;
 };
 const table = document.querySelector("[data-tabela]");
 
-table.addEventListener("click", (event) => {
+table.addEventListener("click", async (event) => {
 	let deletButton =
 		event.target.className === "botao-simples botao-simples--excluir";
 	if (deletButton) {
 		const clientLine = event.target.closest("[data-id]");
 		let id = clientLine.dataset.id;
-		clientService.deletClient(id).then(() => {
-			clientLine.remove();
-		});
+		await clientService.deletClient(id);
+		clientLine.remove();
 	}
 });
 
-clientService.clientList().then((data) => {
-	data.forEach((element) => {
+const render = async () => {
+	const clientList = await clientService.clientList();
+
+	clientList.forEach((element) => {
 		table.appendChild(
 			createNewLine(element.nome, element.email, element.id)
 		);
 	});
-});
+};
+
+render();
